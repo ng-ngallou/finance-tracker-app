@@ -11,13 +11,13 @@ class DropArea_ui(QWidget):
 
         layout = QVBoxLayout()
 
-        frame1 = QFrame(self)
-        frame1_layout = QVBoxLayout()
-        frame1.setLayout(frame1_layout)
+        frame = QFrame(self)
+        frame_layout = QVBoxLayout()
+        frame.setLayout(frame_layout)
 
         self.drop_frame = DropFrame()
         self.drop_frame.resize(550, 300)
-        frame1_layout.addWidget(self.drop_frame, stretch=1)
+        frame_layout.addWidget(self.drop_frame, stretch=1)
 
         font = QFont()
         font.setPointSize(14)
@@ -25,9 +25,9 @@ class DropArea_ui(QWidget):
         self.analyze_btn = RoundedButton("Analyze")
         self.analyze_btn.setMinimumSize(QSize(100, 40))
         self.analyze_btn.setFont(font)
-        frame1_layout.addWidget(self.analyze_btn, alignment=Qt.AlignmentFlag.AlignCenter)
+        frame_layout.addWidget(self.analyze_btn, alignment=Qt.AlignmentFlag.AlignCenter)
 
-        layout.addWidget(frame1)
+        layout.addWidget(frame)
 
         self.setLayout(layout)
 
@@ -51,10 +51,12 @@ class DropFrame(QFrame):
         font.setPointSize(14)
 
         layout = QVBoxLayout()
+
         self.label = QLabel("Drag and drop a CSV file here")
         self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.label.setFont(font)
         layout.addWidget(self.label)
+
         self.setLayout(layout)
 
         bottom_right_layout = QHBoxLayout()
