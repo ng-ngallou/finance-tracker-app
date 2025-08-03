@@ -25,7 +25,7 @@ def analyze_transactions():
     # Check transactions
     my_categories = {'Rent': [], 'Supermarket': [], 'Food at work': [], 'Food out': [], 'Car': [], 'Transportation': [],
                      'Shopping': [], 'Services': [], 'Spanish': [], 'Entertainment': [], 'Hotels': [],
-                     'Health / Pharmacy': [], 'Gifts / Loans': [], 'Stocks': [], 'Other Investments': [],
+                     'Health / Pharmacy': [], 'Gifts': [], 'Stocks': [], 'Other Investments': [],
                      }
     non_classified = []
 
@@ -107,15 +107,6 @@ def analyze_transactions():
           f'------------------------------------------------------------------'
           f'\n{non_classified}')
 
-#     pie_plot(list(my_categories.values()), list(my_categories.keys()))
-#
-#
-# def pie_plot(data, labels):
-#     fig, ax = plt.subplots()
-#     title('January 2025')
-#     ax.pie(data, labels=labels, autopct='%1.1f%%')
-#     plt.show()
-
 
 if __name__ == '__main__':
-    card_transactions()
+    analyze_transactions()
