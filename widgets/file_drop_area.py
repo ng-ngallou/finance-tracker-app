@@ -14,7 +14,6 @@ class DropArea(DropArea_ui):
         file_path, _ = QFileDialog.getOpenFileName(self, "Open CSV", "", "CSV files (*.csv)")
         if file_path:
             self.open_file_path = file_path
-            print(self.open_file_path)
             self.drop_frame.label.setText(os.path.basename(self.open_file_path))
             self.drop_frame.successful_highlight()
             self.drop_frame.file_path = None

@@ -5,17 +5,17 @@ import calendar
 class Transactions:
     EXP_CATEGORIES: dict = {
         'Rent': [1050],
+        'Hotels': [],
         'Supermarket': [],
+        'Services': [],
         'Food at work': [],
         'Food out': [],
+        'Health / Pharmacy': [],
         'Car': [],
         'Transportation': [],
         'Shopping': [],
-        'Services': [],
         # 'Spanish': [],
         'Entertainment': [],
-        'Hotels': [],
-        'Health / Pharmacy': [],
         # 'Gifts': [],
         # 'Stocks': [],
         # 'Other Investments': [],
@@ -35,6 +35,17 @@ class Transactions:
         self.year = last_date.split('.')[-1]
         int_month = int(last_date.split('.')[1])
         self.month = calendar.month_name[int_month]
+
+        # Check total expenses approximately
+        self.total_expenses = self.calculate_total_expenses(df, exchange_rate)
+
+    def calculate_total_expenses(self, df, exchange_rate):
+        curr_eur = df['Currency'] == 'EUR'
+        eur_expenses = df[curr_eur]
+        curr_chf = df['Currency'] == 'CHF'
+        chf_expenses = df[curr_chf]
+
+        return (eur_expenses["Debit"].sum() + chf_expenses["Debit"].sum() * exchange_rate).round(2)
 
     def analyze(self):
         for _, row in self.df.iterrows():
@@ -110,8 +121,10 @@ class Transactions:
             if row['Credit'] is not np.nan:
                 self.reimbursements += row['Credit']
                 row['Debit'] = -row['Credit']
+                self.total_expenses += row['Debit']
 
     def check_pending_transactions(self, row):
         if pd.isna(row['Debit']) and pd.isna(row['Credit']):
             row['Debit'] = row['Amount']
+            self.total_expenses += row['Debit']
 

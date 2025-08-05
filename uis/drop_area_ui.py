@@ -6,8 +6,16 @@ from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QFrame, Q
 
 
 class DropArea_ui(QWidget):
-    def __init__(self, parent=None):
-        super().__init__(parent)
+    def __init__(self):
+        super().__init__()
+
+        self.setObjectName("DropWidget")
+        self.setStyleSheet("""
+                    QFrame#DropWidget {
+                        border-radius: 10%;
+                        background-color: white;
+                    }
+                """)
 
         layout = QVBoxLayout()
 
@@ -20,7 +28,7 @@ class DropArea_ui(QWidget):
         frame_layout.addWidget(self.drop_frame, stretch=1)
 
         font = QFont()
-        font.setPointSize(14)
+        font.setPointSize(16)
 
         self.analyze_btn = RoundedButton("Analyze")
         self.analyze_btn.setMinimumSize(QSize(100, 40))
@@ -43,13 +51,13 @@ class DropFrame(QFrame):
         self.setStyleSheet("""
             QFrame#DropArea {
                 border: 2px dashed #aaa;
-                border-radius: 20%;
-                background-color: #f8f8f8;
+                border-radius: 10%;
+                background-color: white;
             }
         """)
 
         font = QFont()
-        font.setPointSize(14)
+        font.setPointSize(16)
 
         layout = QVBoxLayout()
 
@@ -101,7 +109,7 @@ class DropFrame(QFrame):
                 QFrame#DropArea {
                     border: 2px dashed #aaa;
                     border-radius: 20%;
-                    background-color: #f8f8f8;
+                    background-color: white;
                 }
             """)
 

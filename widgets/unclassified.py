@@ -11,6 +11,9 @@ class PrintoutWidget(QWidget):
 
         font = QFont()
         font.setPointSize(14)
+        self.text_area.setFont(font)
+
+        font.setPointSize(18)
 
         label = QLabel("Unclassified Transactions:")
         label.setFont(font)
@@ -22,5 +25,5 @@ class PrintoutWidget(QWidget):
     def dump_text(self, lines: list[str]):
         self.text_area.clear()
         self.text_area.append(
-            "\n\n-------------------------------------------------------------------------------------\n\n".join(lines)
+            "\n\n------------------------------------------------------------------------------------\n\n".join(lines)
         )

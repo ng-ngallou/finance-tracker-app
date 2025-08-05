@@ -15,9 +15,6 @@ from widgets.unclassified import PrintoutWidget
 class FinanceTracker(QMainWindow):
     def __init__(self):
         super().__init__()
-        # Initialize variables
-        self.results = None
-        self.unclassified_transactions = None
 
         # Init GUI
         self.setWindowTitle("Personal Finance Tracker")
@@ -34,15 +31,17 @@ class FinanceTracker(QMainWindow):
         self.plot_widget = PlotWidget()
         self.result_table = ResultTable()
         self.printout_widget = PrintoutWidget()
-        self.empty_widget = QLabel("Reserved for future use")
-        self.empty_widget.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        # self.empty_widget = QLabel("Reserved for future use")
+        # self.empty_widget.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         # Place widgets
         layout.addWidget(self.drop_area, 0, 0)
         layout.addWidget(self.plot_widget, 0, 1)
         layout.addWidget(self.result_table, 1, 1)
         layout.addWidget(self.printout_widget, 1, 0)
-        layout.addWidget(self.empty_widget, 2, 0, 1, 2)
+        # layout.addWidget(self.empty_widget, 2, 0, 1, 2)
+
+        self.statusBar().showMessage("Select a CSV file and press 'Analyze'.")
 
         # Connect button
         self.drop_area.analyze_btn.clicked.connect(self.run_analysis)
@@ -61,6 +60,7 @@ class FinanceTracker(QMainWindow):
             self.plot_widget.plot(tr.EXP_CATEGORIES, title=f"{tr.month} {tr.year}")
 
             # Results table
+            self.result_table.label.setText(f"Total Monthly Expenses: {tr.total_expenses} EUR")
             self.result_table.populate(tr.EXP_CATEGORIES)
 
             # Unclassified transactions
