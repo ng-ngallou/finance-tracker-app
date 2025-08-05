@@ -9,17 +9,16 @@ class DropArea_ui(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.setObjectName("DropWidget")
-        self.setStyleSheet("""
-                    QFrame#DropWidget {
-                        border-radius: 10%;
-                        background-color: white;
-                    }
-                """)
-
         layout = QVBoxLayout()
 
         frame = QFrame(self)
+        frame.setObjectName('frame1')
+        frame.setStyleSheet("""
+            QFrame#frame1 {
+                border-radius: 10%;
+                background-color: white;
+            }
+        """)
         frame_layout = QVBoxLayout()
         frame.setLayout(frame_layout)
 

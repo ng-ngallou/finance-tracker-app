@@ -1,5 +1,5 @@
 from PyQt6.QtGui import QFont
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QTextEdit, QLabel
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QTextEdit, QLabel, QFrame
 
 
 class PrintoutWidget(QWidget):
@@ -9,6 +9,17 @@ class PrintoutWidget(QWidget):
         self.text_area = QTextEdit()
         self.text_area.setReadOnly(True)
 
+        frame = QFrame(self)
+        frame.setObjectName('frame1')
+        frame.setStyleSheet("""
+            QFrame#frame1 {
+                border-radius: 10%;
+                background-color: white;
+            }
+        """)
+        frame_layout = QVBoxLayout()
+        frame.setLayout(frame_layout)
+
         font = QFont()
         font.setPointSize(14)
         self.text_area.setFont(font)
@@ -17,9 +28,11 @@ class PrintoutWidget(QWidget):
 
         label = QLabel("Unclassified Transactions:")
         label.setFont(font)
-        layout.addWidget(label)
+        frame_layout.addWidget(label)
 
-        layout.addWidget(self.text_area)
+        frame_layout.addWidget(self.text_area)
+
+        layout.addWidget(frame)
         self.setLayout(layout)
 
     def dump_text(self, lines: list[str]):

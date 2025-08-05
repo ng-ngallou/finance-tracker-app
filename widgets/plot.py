@@ -1,4 +1,5 @@
-from PyQt6.QtWidgets import QWidget, QVBoxLayout
+from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QFrame
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 
@@ -7,9 +8,25 @@ class PlotWidget(QWidget):
     def __init__(self):
         super().__init__()
         layout = QVBoxLayout()
+
+        frame = QFrame(self)
+        frame.setObjectName('frame1')
+        frame.setStyleSheet("""
+            QFrame#frame1 {
+                border-radius: 10%;
+                background-color: white;
+            }
+        """)
+        frame_layout = QVBoxLayout()
+        frame.setLayout(frame_layout)
+
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
+
         self.figure = Figure(figsize=(4, 3))
         self.canvas = FigureCanvas(self.figure)
-        layout.addWidget(self.canvas)
+        frame_layout.addWidget(self.canvas)
+
+        layout.addWidget(frame)
         self.setLayout(layout)
 
     def plot(self, data: dict, title: str) -> None:

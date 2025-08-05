@@ -24,6 +24,8 @@ class FinanceTracker(QMainWindow):
         self.setCentralWidget(central_widget)
 
         layout = QGridLayout()
+        layout.setSpacing(0)
+        layout.setContentsMargins(1, 1, 1, 1)
         central_widget.setLayout(layout)
 
         # Initialize widgets
@@ -41,7 +43,7 @@ class FinanceTracker(QMainWindow):
         layout.addWidget(self.printout_widget, 1, 0)
         # layout.addWidget(self.empty_widget, 2, 0, 1, 2)
 
-        self.statusBar().showMessage("Select a CSV file and press 'Analyze'.")
+        self.statusBar().showMessage('Select a CSV file and press "Analyze".')
 
         # Connect button
         self.drop_area.analyze_btn.clicked.connect(self.run_analysis)
@@ -66,7 +68,7 @@ class FinanceTracker(QMainWindow):
             # Unclassified transactions
             self.printout_widget.dump_text(tr.UNCLASSIFIED_EXPENSES)
 
-            self.statusBar().showMessage("Analysis complete.")
+            self.statusBar().showMessage("Analysis completed successfully.")
         except Exception as e:
             self.statusBar().showMessage(f"Error: {e}")
 
