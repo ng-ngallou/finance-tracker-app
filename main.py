@@ -62,7 +62,7 @@ class FinanceTracker(QMainWindow):
             self.plot_widget.plot(tr.EXP_CATEGORIES, title=f"{tr.month} {tr.year}")
 
             # Results table
-            self.result_table.label.setText(f"Total Monthly Expenses: {tr.total_expenses} EUR")
+            self.result_table.label.setText(f"Total Monthly Expenses: {round(tr.total_expenses, 2)} EUR")
             self.result_table.populate(tr.EXP_CATEGORIES)
 
             # Unclassified transactions

@@ -129,7 +129,6 @@ class RoundedButton(QPushButton):
             QPushButton {
                 background-color: #318CE7;   /* Blue */
                 color: white;
-                border: 2px solid #0078d7;
                 border-radius: 15%;
             }
 
