@@ -11,13 +11,15 @@ from widgets.plot import PlotWidget
 from widgets.result_table import ResultTable
 from widgets.unclassified import PrintoutWidget
 
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
 
 class FinanceTracker(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.log = logger
+        # Initialize variables
+        self.results = None
+        self.unclassified_transactions = None
+
+        # Init GUI
         self.setWindowTitle("Personal Finance Tracker")
         self.setMinimumSize(1200, 900)
 
@@ -53,6 +55,9 @@ class FinanceTracker(QMainWindow):
         try:
             tr = Transactions(path, exchange_rate=1.07)
             tr.analyze()
+            self.results = Transactions.EXP_CATEGORIES
+            self.unclassified_transactions = Transactions.UNCLASSIFIED_EXPENSES
+            print(self.unclassified_transactions, self.results)
             self.statusBar().showMessage("Analysis complete.")
         except Exception as e:
             self.statusBar().showMessage(f"Error: {e}")
