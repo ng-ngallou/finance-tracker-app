@@ -55,9 +55,10 @@ class FinanceTracker(QMainWindow):
         try:
             tr = Transactions(path, exchange_rate=1.07)
             tr.analyze()
-            self.results = Transactions.EXP_CATEGORIES
-            self.unclassified_transactions = Transactions.UNCLASSIFIED_EXPENSES
-            print(self.unclassified_transactions, self.results)
+            self.results = tr.EXP_CATEGORIES
+            self.unclassified_transactions = tr.UNCLASSIFIED_EXPENSES
+
+            self.plot_widget.plot(self.results, title=f"{tr.month} {tr.year}")
             self.statusBar().showMessage("Analysis complete.")
         except Exception as e:
             self.statusBar().showMessage(f"Error: {e}")

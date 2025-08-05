@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from pprint import pprint
+import calendar
 
 class Transactions:
     EXP_CATEGORIES: dict = {
@@ -29,6 +29,12 @@ class Transactions:
         # Load the data
         df = pd.read_csv(filename, sep=";", skiprows=1)
         self.df = df.dropna(subset=['Card number'])
+
+        # Expose month and year for plot title
+        last_date = self.df['Purchase date'][0]
+        self.year = last_date.split('.')[-1]
+        int_month = int(last_date.split('.')[1])
+        self.month = calendar.month_name[int_month]
 
     def analyze(self):
         for _, row in self.df.iterrows():
@@ -73,7 +79,7 @@ class Transactions:
             elif sector in ['Pharmacies', 'Medical Services Health Practitioners - No Elsewhere Classified']:
                 self.EXP_CATEGORIES['Health / Pharmacy'].append(row['Debit'])
 
-            elif sector in ['Barber or beauty shops', 'Telecomminication service', 'Postal Services',
+            elif sector in ['Barber or beauty shops', 'Postal Services',
                             'Commercial Sports, Professional Sports Clubs, Athletic Fields, and Sports Promoters']:
                 self.EXP_CATEGORIES['Services'].append(row['Debit'])
 

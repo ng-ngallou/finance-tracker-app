@@ -12,8 +12,9 @@ class PlotWidget(QWidget):
         layout.addWidget(self.canvas)
         self.setLayout(layout)
 
-    def plot(self, data: dict):
+    def plot(self, data: dict, title: str) -> None:
         self.figure.clear()
         ax = self.figure.add_subplot(111)
         ax.pie(data.values(), labels=data.keys(), autopct='%1.1f%%')
+        ax.set_title(title)
         self.canvas.draw()
