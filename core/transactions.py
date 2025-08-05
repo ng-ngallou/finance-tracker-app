@@ -4,7 +4,7 @@ import calendar
 
 class Transactions:
     EXP_CATEGORIES: dict = {
-        'Rent': [],
+        'Rent': [1050],
         'Supermarket': [],
         'Food at work': [],
         'Food out': [],
@@ -12,13 +12,13 @@ class Transactions:
         'Transportation': [],
         'Shopping': [],
         'Services': [],
-        'Spanish': [],
+        # 'Spanish': [],
         'Entertainment': [],
         'Hotels': [],
         'Health / Pharmacy': [],
-        'Gifts': [],
-        'Stocks': [],
-        'Other Investments': [],
+        # 'Gifts': [],
+        # 'Stocks': [],
+        # 'Other Investments': [],
     }
     UNCLASSIFIED_EXPENSES: list = []
 
@@ -93,7 +93,7 @@ class Transactions:
                     self.EXP_CATEGORIES['Hotels'].append(row['Debit'])
 
             else:
-                self.UNCLASSIFIED_EXPENSES.append(row)
+                self.UNCLASSIFIED_EXPENSES.append(str(row))
 
         self.calculate_expenses()
 

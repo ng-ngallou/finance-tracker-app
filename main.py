@@ -40,8 +40,8 @@ class FinanceTracker(QMainWindow):
         # Place widgets
         layout.addWidget(self.drop_area, 0, 0)
         layout.addWidget(self.plot_widget, 0, 1)
-        layout.addWidget(self.result_table, 1, 0)
-        layout.addWidget(self.printout_widget, 1, 1)
+        layout.addWidget(self.result_table, 1, 1)
+        layout.addWidget(self.printout_widget, 1, 0)
         layout.addWidget(self.empty_widget, 2, 0, 1, 2)
 
         # Connect button
@@ -53,12 +53,19 @@ class FinanceTracker(QMainWindow):
             self.statusBar().showMessage("Please select a CSV file first.")
             return
         try:
+            # Analyze transactions
             tr = Transactions(path, exchange_rate=1.07)
             tr.analyze()
-            self.results = tr.EXP_CATEGORIES
-            self.unclassified_transactions = tr.UNCLASSIFIED_EXPENSES
 
-            self.plot_widget.plot(self.results, title=f"{tr.month} {tr.year}")
+            # Plot results
+            self.plot_widget.plot(tr.EXP_CATEGORIES, title=f"{tr.month} {tr.year}")
+
+            # Results table
+            self.result_table.populate(tr.EXP_CATEGORIES)
+
+            # Unclassified transactions
+            self.printout_widget.dump_text(tr.UNCLASSIFIED_EXPENSES)
+
             self.statusBar().showMessage("Analysis complete.")
         except Exception as e:
             self.statusBar().showMessage(f"Error: {e}")

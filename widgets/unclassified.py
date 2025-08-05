@@ -1,3 +1,4 @@
+from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QTextEdit, QLabel
 
 
@@ -7,10 +8,19 @@ class PrintoutWidget(QWidget):
         layout = QVBoxLayout()
         self.text_area = QTextEdit()
         self.text_area.setReadOnly(True)
-        layout.addWidget(QLabel("Unclassified Transactions"))
+
+        font = QFont()
+        font.setPointSize(14)
+
+        label = QLabel("Unclassified Transactions:")
+        label.setFont(font)
+        layout.addWidget(label)
+
         layout.addWidget(self.text_area)
         self.setLayout(layout)
 
     def dump_text(self, lines: list[str]):
         self.text_area.clear()
-        self.text_area.append("\n".join(lines))
+        self.text_area.append(
+            "\n\n-------------------------------------------------------------------------------------\n\n".join(lines)
+        )
