@@ -1,18 +1,23 @@
+import logging
 import sys
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QGridLayout, QLabel
 )
 from PyQt6.QtCore import Qt
 
+from core.card_transactions_script import Transactions
 from widgets.file_drop_area import DropArea
 from widgets.plot import PlotWidget
 from widgets.result_table import ResultTable
 from widgets.unclassified import PrintoutWidget
 
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
 class FinanceTracker(QMainWindow):
     def __init__(self):
         super().__init__()
+        self.log = logger
         self.setWindowTitle("Personal Finance Tracker")
         self.setMinimumSize(1200, 900)
 
@@ -41,15 +46,18 @@ class FinanceTracker(QMainWindow):
         self.drop_area.analyze_btn.clicked.connect(self.run_analysis)
 
     def run_analysis(self):
-        path = self.drop_area.file_path
+        path = self.drop_area.drop_frame.file_path if self.drop_area.drop_frame.file_path is not None else self.drop_area.open_file_path
+        print(path)
         if not path:
             self.statusBar().showMessage("Please select a CSV file first.")
             return
         try:
-            # TODO: run analysis here
+            tr = Transactions(path, exchange_rate=1.07)
+            tr.analyze()
             self.statusBar().showMessage("Analysis complete.")
+            self.statusBar().showMessage(str(tr.EXP_CATEGORIES))
         except Exception as e:
-            self.statusBar().showMessage(f"Error: {str(e)}")
+            self.statusBar().showMessage(f"Error: {e}")
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

@@ -38,6 +38,7 @@ class DropFrame(QFrame):
 
         self.setObjectName("DropArea")
         self.setAcceptDrops(True)
+        self.file_path = None
 
         self.setStyleSheet("""
             QFrame#DropArea {
@@ -81,7 +82,7 @@ class DropFrame(QFrame):
         urls = event.mimeData().urls()
         if urls and urls[0].toLocalFile().endswith(".csv"):
             self.file_path = urls[0].toLocalFile()
-            self.label.setText(f"{os.path.basename(self.file_path)}")
+            self.label.setText(os.path.basename(self.file_path))
             self.successful_highlight()
         else:
             self.label.setText("Invalid file type. Please drop a CSV.")
