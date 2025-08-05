@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtCore import Qt
 
-from core.card_transactions_script import Transactions
+from core.transactions import Transactions
 from widgets.file_drop_area import DropArea
 from widgets.plot import PlotWidget
 from widgets.result_table import ResultTable
@@ -47,7 +47,6 @@ class FinanceTracker(QMainWindow):
 
     def run_analysis(self):
         path = self.drop_area.drop_frame.file_path if self.drop_area.drop_frame.file_path is not None else self.drop_area.open_file_path
-        print(path)
         if not path:
             self.statusBar().showMessage("Please select a CSV file first.")
             return
@@ -55,7 +54,6 @@ class FinanceTracker(QMainWindow):
             tr = Transactions(path, exchange_rate=1.07)
             tr.analyze()
             self.statusBar().showMessage("Analysis complete.")
-            self.statusBar().showMessage(str(tr.EXP_CATEGORIES))
         except Exception as e:
             self.statusBar().showMessage(f"Error: {e}")
 

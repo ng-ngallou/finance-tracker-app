@@ -1,7 +1,6 @@
 import os
 from PyQt6.QtWidgets import QFileDialog
 from uis.drop_area_ui import DropArea_ui
-from core.card_transactions_script import Transactions
 
 
 class DropArea(DropArea_ui):

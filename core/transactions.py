@@ -19,8 +19,8 @@ class Transactions:
         'Gifts': [],
         'Stocks': [],
         'Other Investments': [],
-        'Unclassified': []
     }
+    UNCLASSIFIED_EXPENSES: list = []
 
     def __init__(self, filename: str, exchange_rate: float) -> None:
         self.exchange_rate = exchange_rate
@@ -80,7 +80,7 @@ class Transactions:
                     self.EXP_CATEGORIES['Hotels'].append(row['Debit'])
 
             else:
-                self.EXP_CATEGORIES['Unclassified'].append(row)
+                self.UNCLASSIFIED_EXPENSES.append(row)
 
         self.calculate_expenses()
 
@@ -90,7 +90,7 @@ class Transactions:
 
     def convert_chf_to_eur(self, row):
         if row['Currency'] == 'CHF':
-            row['Debit'] = row['Debit'] * self.exchange_rate
+            row['Debit'] = round(row['Debit'] * self.exchange_rate, 2)
 
     def check_for_reimbursements(self, row):
         if pd.isna(row['Debit']):
