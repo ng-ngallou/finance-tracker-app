@@ -49,6 +49,10 @@ class FinanceTracker(QMainWindow):
         self.drop_area.analyze_btn.clicked.connect(self.run_analysis)
 
     def run_analysis(self):
+        # self.result_table.table.clear()
+        # self.plot_widget.figure.clear()
+        # self.printout_widget.text_area.clear()
+
         path = self.drop_area.drop_frame.file_path if self.drop_area.drop_frame.file_path is not None else self.drop_area.open_file_path
         if not path:
             self.statusBar().showMessage("Please select a CSV file first.")
@@ -56,12 +60,13 @@ class FinanceTracker(QMainWindow):
         try:
             # Analyze transactions
             tr = Transactions(path, exchange_rate=1.07)
+            print(tr.EXP_CATEGORIES)
             tr.analyze()
 
             # Plot results
             self.plot_widget.plot(tr.EXP_CATEGORIES, title=f"{tr.month} {tr.year}")
 
-            # Results table
+            # Result table
             self.result_table.label.setText(f"Total Monthly Expenses: {round(tr.total_expenses, 2)} EUR")
             self.result_table.populate(tr.EXP_CATEGORIES)
 

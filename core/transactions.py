@@ -3,28 +3,28 @@ import pandas as pd
 import calendar
 
 class Transactions:
-    EXP_CATEGORIES: dict = {
-        'Rent': [1050],
-        'Hotels': [],
-        'Supermarket': [],
-        'Services': [],
-        'Food at work': [],
-        'Food out': [],
-        'Health / Pharmacy': [],
-        'Car': [],
-        'Transportation': [],
-        'Shopping': [],
-        # 'Spanish': [],
-        'Entertainment': [],
-        # 'Gifts': [],
-        # 'Stocks': [],
-        # 'Other Investments': [],
-    }
-    UNCLASSIFIED_EXPENSES: list = []
 
     def __init__(self, filename: str, exchange_rate: float) -> None:
         self.exchange_rate = exchange_rate
         self.reimbursements = 0
+        self.EXP_CATEGORIES: dict = {
+            'Rent': [1050],
+            'Hotels': [],
+            'Supermarket': [],
+            'Services': [],
+            'Food at work': [],
+            'Food out': [],
+            'Health / Pharmacy': [],
+            'Car': [],
+            'Transportation': [],
+            'Shopping': [],
+            # 'Spanish': [],
+            'Entertainment': [],
+            # 'Gifts': [],
+            # 'Stocks': [],
+            # 'Other Investments': [],
+        }
+        self.UNCLASSIFIED_EXPENSES: list = []
 
         # Load the data
         df = pd.read_csv(filename, sep=";", skiprows=1)
