@@ -1,12 +1,12 @@
-from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QFont
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QFrame, QLabel, QSizePolicy
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QFont
+from PyQt6.QtWidgets import QFrame, QLabel, QSizePolicy, QVBoxLayout, QWidget
 
 
 class PlotWidget(QWidget):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         layout = QVBoxLayout()
 
@@ -14,7 +14,7 @@ class PlotWidget(QWidget):
         font.setPointSize(18)
 
         frame = QFrame(self)
-        frame.setObjectName('frame1')
+        frame.setObjectName("frame1")
         frame.setStyleSheet("""
             QFrame#frame1 {
                 border-radius: 10%;
@@ -30,7 +30,9 @@ class PlotWidget(QWidget):
 
         self.figure = Figure(figsize=(4, 3))
         self.canvas = FigureCanvas(self.figure)
-        self.canvas.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        self.canvas.setSizePolicy(
+            QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
+        )
         frame_layout.addWidget(self.canvas)
 
         layout.addWidget(frame)
@@ -39,6 +41,6 @@ class PlotWidget(QWidget):
     def plot(self, data: dict, title: str) -> None:
         self.figure.clear()
         ax = self.figure.add_subplot(111)
-        ax.pie(data.values(), labels=list(data.keys()), autopct='%1.1f%%')
+        ax.pie(data.values(), labels=list(data.keys()), autopct="%1.1f%%")
         ax.set_title(title)
         self.canvas.draw()

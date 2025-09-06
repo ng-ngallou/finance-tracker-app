@@ -1,16 +1,16 @@
 from PyQt6.QtGui import QFont
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QTextEdit, QLabel, QFrame
+from PyQt6.QtWidgets import QFrame, QLabel, QTextEdit, QVBoxLayout, QWidget
 
 
 class PrintoutWidget(QWidget):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         layout = QVBoxLayout()
         self.text_area = QTextEdit()
         self.text_area.setReadOnly(True)
 
         frame = QFrame(self)
-        frame.setObjectName('frame1')
+        frame.setObjectName("frame1")
         frame.setStyleSheet("""
             QFrame#frame1 {
                 border-radius: 10%;
@@ -35,8 +35,10 @@ class PrintoutWidget(QWidget):
         layout.addWidget(frame)
         self.setLayout(layout)
 
-    def dump_text(self, lines: list[str]):
+    def dump_text(self, lines: list[str]) -> None:
         self.text_area.clear()
         self.text_area.append(
-            "\n\n------------------------------------------------------------------------------------\n\n".join(lines)
+            "\n\n------------------------------------------------------------------------------------\n\n".join(
+                lines
+            )
         )

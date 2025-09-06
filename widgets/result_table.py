@@ -1,15 +1,22 @@
 from PyQt6.QtGui import QFont
-from PyQt6.QtWidgets import QWidget, QTableWidget, QVBoxLayout, QTableWidgetItem, QLabel, QFrame
+from PyQt6.QtWidgets import (
+    QFrame,
+    QLabel,
+    QTableWidget,
+    QTableWidgetItem,
+    QVBoxLayout,
+    QWidget,
+)
 
 
 class ResultTable(QWidget):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.table = QTableWidget()
         layout = QVBoxLayout()
 
         frame = QFrame(self)
-        frame.setObjectName('frame1')
+        frame.setObjectName("frame1")
         frame.setStyleSheet("""
             QFrame#frame1 {
                 border-radius: 10%;
@@ -37,7 +44,7 @@ class ResultTable(QWidget):
         self.table.setColumnCount(2)
         self.table.setHorizontalHeaderLabels(["Category", "Amount"])
 
-    def populate(self, data: dict):
+    def populate(self, data: dict) -> None:
         self.table.clear()
 
         self.table.setRowCount(len(data))

@@ -1,11 +1,8 @@
-import logging
-import sys
 import calendar
+import sys
 
 import pandas as pd
-from PyQt6.QtWidgets import (
-    QApplication, QMainWindow, QWidget, QGridLayout, QLabel
-)
+from PyQt6.QtWidgets import QApplication, QGridLayout, QMainWindow, QWidget
 
 from core.scrape_exch_rate import ExchangeRate
 from core.transactions import Transactions
@@ -16,7 +13,7 @@ from widgets.unclassified import PrintoutWidget
 
 
 class FinanceTracker(QMainWindow):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
         # Init GUI
@@ -51,24 +48,28 @@ class FinanceTracker(QMainWindow):
         # Connect button
         self.drop_area.analyze_btn.clicked.connect(self.run_analysis)
 
-    def run_analysis(self):
+    def run_analysis(self) -> None:
         # self.result_table.table.clear()
         # self.plot_widget.figure.clear()
         # self.printout_widget.text_area.clear()
 
-        path = self.drop_area.drop_frame.file_path if self.drop_area.drop_frame.file_path is not None else self.drop_area.open_file_path
+        path = (
+            self.drop_area.drop_frame.file_path
+            if self.drop_area.drop_frame.file_path is not None
+            else self.drop_area.open_file_path
+        )
         if not path:
             self.statusBar().showMessage("Please select a CSV file first.")
             return
         try:
             # Load the data
             df = pd.read_csv(path, sep=";", skiprows=1)
-            df = df.dropna(subset=['Card number'])
+            df = df.dropna(subset=["Card number"])
 
             # Expose month and year
-            last_date = df['Purchase date'][0]
-            year = last_date.split('.')[-1]
-            int_month = int(last_date.split('.')[1])
+            last_date = df["Purchase date"][0]
+            year = last_date.split(".")[-1]
+            int_month = int(last_date.split(".")[1])
             month = calendar.month_abbr[int_month]
 
             # Scrape exchange rate
@@ -80,10 +81,14 @@ class FinanceTracker(QMainWindow):
             tr.analyze()
 
             # Plot results
-            self.plot_widget.plot(tr.EXP_CATEGORIES, title=f"{calendar.month_name[int_month]} {year}")
+            self.plot_widget.plot(
+                tr.EXP_CATEGORIES, title=f"{calendar.month_name[int_month]} {year}"
+            )
 
             # Result table
-            self.result_table.label.setText(f"Total Monthly Expenses: {round(tr.total_expenses, 2)} EUR")
+            self.result_table.label.setText(
+                f"Total Monthly Expenses: {round(tr.total_expenses, 2)} EUR"
+            )
             self.result_table.populate(tr.EXP_CATEGORIES)
 
             # Unclassified transactions
@@ -92,6 +97,7 @@ class FinanceTracker(QMainWindow):
             self.statusBar().showMessage("Analysis completed successfully.")
         except Exception as e:
             self.statusBar().showMessage(f"Error: {e}")
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

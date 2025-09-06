@@ -1,12 +1,19 @@
 import os
 
-from PyQt6.QtCore import Qt, QSize
-from PyQt6.QtGui import QFont, QDragEnterEvent, QDropEvent, QDragLeaveEvent
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QFrame, QHBoxLayout
+from PyQt6.QtCore import QSize, Qt
+from PyQt6.QtGui import QDragEnterEvent, QDragLeaveEvent, QDropEvent, QFont
+from PyQt6.QtWidgets import (
+    QFrame,
+    QHBoxLayout,
+    QLabel,
+    QPushButton,
+    QVBoxLayout,
+    QWidget,
+)
 
 
 class DropArea_ui(QWidget):
-    """ Drop Area widget, includes drop frame and buttons."""
+    """Drop Area widget, includes drop frame and buttons."""
 
     def __init__(self) -> None:
         super().__init__()
@@ -14,7 +21,7 @@ class DropArea_ui(QWidget):
         layout = QVBoxLayout()
 
         frame = QFrame(self)
-        frame.setObjectName('frame1')
+        frame.setObjectName("frame1")
         frame.setStyleSheet("""
             QFrame#frame1 {
                 border-radius: 10%;
@@ -42,9 +49,9 @@ class DropArea_ui(QWidget):
 
 
 class DropFrame(QFrame):
-    """ Drop Area to drop file for analysis. """
+    """Drop Area to drop file for analysis."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
         self.setObjectName("DropArea")
@@ -93,7 +100,7 @@ class DropFrame(QFrame):
         urls = event.mimeData().urls()
         if urls and urls[0].toLocalFile().endswith(".csv"):
             self.file_path = urls[0].toLocalFile()
-            self.label.setText(os.path.basename(self.file_path))
+            self.label.setText(os.path.basename(self.file_path))  # type: ignore
             self.successful_highlight()
         else:
             self.label.setText("Invalid file type. Please drop a CSV.")
@@ -127,10 +134,9 @@ class DropFrame(QFrame):
 
 
 class RoundedButton(QPushButton):
-    """" Class for rounded blue buttons. They get darker when hovered over and clicked on."""
+    """ " Class for rounded blue buttons. They get darker when hovered over and clicked on."""
 
     def __init__(self, text: str) -> None:
-
         super().__init__(text)
         self.setStyleSheet("""
             QPushButton {
@@ -147,5 +153,3 @@ class RoundedButton(QPushButton):
                 background-color: #1565C0;   /* Even darker blue */
             }
         """)
-
-
