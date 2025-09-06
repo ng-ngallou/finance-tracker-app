@@ -2,7 +2,7 @@ import os
 
 from PyQt6.QtWidgets import QFileDialog
 
-from widgets.drop_area_ui import DropArea_ui
+from app.widgets.drop_area_ui import DropArea_ui
 
 
 class DropArea(DropArea_ui):
