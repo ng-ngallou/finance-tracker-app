@@ -1,10 +1,13 @@
 import logging
 import sys
+import calendar
+
+import pandas as pd
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QGridLayout, QLabel
 )
-from PyQt6.QtCore import Qt
 
+from core.scrape_exch_rate import ExchangeRate
 from core.transactions import Transactions
 from widgets.file_drop_area import DropArea
 from widgets.plot import PlotWidget
@@ -58,13 +61,26 @@ class FinanceTracker(QMainWindow):
             self.statusBar().showMessage("Please select a CSV file first.")
             return
         try:
+            # Load the data
+            df = pd.read_csv(path, sep=";", skiprows=1)
+            df = df.dropna(subset=['Card number'])
+
+            # Expose month and year
+            last_date = df['Purchase date'][0]
+            year = last_date.split('.')[-1]
+            int_month = int(last_date.split('.')[1])
+            month = calendar.month_abbr[int_month]
+
+            # Scrape exchange rate
+            exch = ExchangeRate(month, year)
+            rate = exch.find_exch_rate()
+
             # Analyze transactions
-            tr = Transactions(path, exchange_rate=1.07)
-            print(tr.EXP_CATEGORIES)
+            tr = Transactions(df, exchange_rate=rate)
             tr.analyze()
 
             # Plot results
-            self.plot_widget.plot(tr.EXP_CATEGORIES, title=f"{tr.month} {tr.year}")
+            self.plot_widget.plot(tr.EXP_CATEGORIES, title=f"{calendar.month_name[int_month]} {year}")
 
             # Result table
             self.result_table.label.setText(f"Total Monthly Expenses: {round(tr.total_expenses, 2)} EUR")

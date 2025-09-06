@@ -1,11 +1,16 @@
 import numpy as np
+import pandas
 import pandas as pd
-import calendar
 
 class Transactions:
 
-    def __init__(self, filename: str, exchange_rate: float) -> None:
+    def __init__(self, df: pandas.DataFrame, exchange_rate: float) -> None:
+        """ Class that analyzes card transactions. It takes into account the exchange rate between CHF and EUR.
+        It accounts for reimbursements and pending transactions. """
+
+        self.df = df
         self.exchange_rate = exchange_rate
+
         self.reimbursements = 0
         self.EXP_CATEGORIES: dict = {
             'Rent': [1050],
@@ -26,20 +31,11 @@ class Transactions:
         }
         self.UNCLASSIFIED_EXPENSES: list = []
 
-        # Load the data
-        df = pd.read_csv(filename, sep=";", skiprows=1)
-        self.df = df.dropna(subset=['Card number'])
-
-        # Expose month and year for plot title
-        last_date = self.df['Purchase date'][0]
-        self.year = last_date.split('.')[-1]
-        int_month = int(last_date.split('.')[1])
-        self.month = calendar.month_name[int_month]
-
         # Check total expenses approximately
         self.total_expenses = self.calculate_total_expenses(df, exchange_rate)
 
-    def calculate_total_expenses(self, df, exchange_rate):
+    @staticmethod
+    def calculate_total_expenses(df, exchange_rate):
         curr_eur = df['Currency'] == 'EUR'
         eur_expenses = df[curr_eur]
         curr_chf = df['Currency'] == 'CHF'
