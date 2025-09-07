@@ -32,7 +32,8 @@ class Transactions:
         self.UNCLASSIFIED_EXPENSES: list = []
 
         # Check total expenses approximately
-        self.total_expenses = self.calculate_total_expenses(df, exchange_rate)
+        self.total_expenses = self.calculate_total_expenses(df, exchange_rate) + self.EXP_CATEGORIES["Rent"][0]
+        print(self.total_expenses)
 
     @staticmethod
     def calculate_total_expenses(df: pandas.DataFrame, exchange_rate: float) -> float:
@@ -166,7 +167,6 @@ class Transactions:
         from the categories expenses."""
 
         if pd.isna(row["Debit"]) and row["Credit"] is not np.nan:
-            print(f'Reimbursed: {row}')
             self.reimbursements += row["Credit"]
             row["Debit"] = -row["Credit"]
             self.total_expenses += row["Debit"]
@@ -175,6 +175,5 @@ class Transactions:
         """Converts pending transactions to executed."""
 
         if pd.isna(row["Debit"]) and pd.isna(row["Credit"]):
-            print(f'Pending: {row}')
             row["Debit"] = row["Amount"]
             self.total_expenses += row["Debit"]
