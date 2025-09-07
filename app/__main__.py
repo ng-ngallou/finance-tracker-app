@@ -4,15 +4,15 @@ import sys
 import pandas as pd
 from PyQt6.QtWidgets import QApplication, QGridLayout, QMainWindow, QWidget
 
-from app.core import ExchangeRate
-from app.core import Transactions
-from app.widgets import DropArea
+from app.core.scrape_exch_rate import ExchangeRate
+from app.core.transactions import Transactions
+from app.widgets.file_drop_area import DropArea
 from app.widgets.plot import PlotWidget
-from app.widgets import ResultTable
+from app.widgets.result_table import ResultTable
 from app.widgets.unclassified import PrintoutWidget
 
 
-class FinanceTracker(QMainWindow):
+class FinanceTrackerApp(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
 
@@ -101,6 +101,6 @@ class FinanceTracker(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = FinanceTracker()
+    window = FinanceTrackerApp()
     window.show()
     sys.exit(app.exec())
