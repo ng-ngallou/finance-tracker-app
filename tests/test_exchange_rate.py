@@ -2,7 +2,7 @@ import pytest
 from bs4 import BeautifulSoup
 import requests
 
-from app.core.scrape_exch_rate import ExchangeRate
+from finance_tracker_app.core.scrape_exch_rate import ExchangeRate
 
 
 @pytest.fixture

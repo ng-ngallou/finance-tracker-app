@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import pytest
-from app.core.transactions import Transactions
+from finance_tracker_app.core.transactions import Transactions
 
 
 @pytest.fixture

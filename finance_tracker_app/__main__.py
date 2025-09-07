@@ -4,12 +4,12 @@ import sys
 import pandas as pd
 from PyQt6.QtWidgets import QApplication, QGridLayout, QMainWindow, QWidget
 
-from app.core.scrape_exch_rate import ExchangeRate
-from app.core.transactions import Transactions
-from app.widgets.file_drop_area import DropArea
-from app.widgets.plot import PlotWidget
-from app.widgets.result_table import ResultTable
-from app.widgets.unclassified import PrintoutWidget
+from finance_tracker_app.core.scrape_exch_rate import ExchangeRate
+from finance_tracker_app.core.transactions import Transactions
+from finance_tracker_app.widgets.file_drop_area import DropArea
+from finance_tracker_app.widgets.plot import PlotWidget
+from finance_tracker_app.widgets.result_table import ResultTable
+from finance_tracker_app.widgets.unclassified import PrintoutWidget
 
 
 class FinanceTrackerApp(QMainWindow):
