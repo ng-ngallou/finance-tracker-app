@@ -33,15 +33,12 @@ class FinanceTrackerApp(QMainWindow):
         self.plot_widget = PlotWidget()
         self.result_table = ResultTable()
         self.printout_widget = PrintoutWidget()
-        # self.empty_widget = QLabel("Reserved for future use")
-        # self.empty_widget.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         # Place widgets
         layout.addWidget(self.drop_area, 0, 0)
         layout.addWidget(self.plot_widget, 0, 1)
         layout.addWidget(self.result_table, 1, 1)
         layout.addWidget(self.printout_widget, 1, 0)
-        # layout.addWidget(self.empty_widget, 2, 0, 1, 2)
 
         self.statusBar().showMessage('Select a CSV file and press "Analyze".')
 
@@ -49,10 +46,6 @@ class FinanceTrackerApp(QMainWindow):
         self.drop_area.analyze_btn.clicked.connect(self.run_analysis)
 
     def run_analysis(self) -> None:
-        # self.result_table.table.clear()
-        # self.plot_widget.figure.clear()
-        # self.printout_widget.text_area.clear()
-
         path = (
             self.drop_area.drop_frame.file_path
             if self.drop_area.drop_frame.file_path is not None

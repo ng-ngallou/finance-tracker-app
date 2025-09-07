@@ -46,6 +46,8 @@ class Transactions:
         ).round(2)
 
     def analyze(self) -> None:
+        """Analyzes card transactions. Writes sums into the 'EXP_CATEGORIES' dictionary. """
+
         for _, row in self.df.iterrows():
             self.check_pending_transactions(row)
             self.check_for_reimbursements(row)
@@ -148,20 +150,31 @@ class Transactions:
         self.calculate_expenses()
 
     def calculate_expenses(self) -> None:
+        """Sums up the expenses of each category."""
+
         for key in self.EXP_CATEGORIES:
             self.EXP_CATEGORIES[key] = round(float(sum(self.EXP_CATEGORIES[key])), 2)
 
     def convert_chf_to_eur(self, row: pandas.Series) -> None:
+        """Converts CHF expenses to EUR using the monthly average exchange rate."""
+
         if row["Currency"] == "CHF":
             row["Debit"] = round(row["Debit"] * self.exchange_rate, 2)
 
     def check_for_reimbursements(self, row: pandas.Series) -> None:
+        """Converts the amount of the reimbursement to a negative expense, it will eventually be abstracted
+        from the categories expenses."""
+
         if pd.isna(row["Debit"]) and row["Credit"] is not np.nan:
+            print(f'Reimbursed: {row}')
             self.reimbursements += row["Credit"]
             row["Debit"] = -row["Credit"]
             self.total_expenses += row["Debit"]
 
     def check_pending_transactions(self, row: pandas.Series) -> None:
+        """Converts pending transactions to executed."""
+
         if pd.isna(row["Debit"]) and pd.isna(row["Credit"]):
+            print(f'Pending: {row}')
             row["Debit"] = row["Amount"]
             self.total_expenses += row["Debit"]

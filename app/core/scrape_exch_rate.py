@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 
 
 class ExchangeRate:
-    """Class to scrape the monthly average exchange rate between CHF and EUR."""
+    """Scrapes the monthly average exchange rate between CHF and EUR."""
 
     def __init__(self, month: str, year: str) -> None:
         self.month = month
