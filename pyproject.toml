@@ -22,9 +22,18 @@ name = "Niki Gallou"
 repository = "https://github.com/ng-ngallou/finance-tracker-app"
 
 [project.optional-dependencies]
-#test = ["pytest", "pytest-cov"]
+test = ["pytest", "pytest-cov"]
 #doc = ["acc-py-sphinx", "myst-parser", "sphinx-copybutton"]
 dev = ["pre-commit", "ruff", "mypy", "black"]
+
+[tool.pytest.ini_options]
+pythonpath = [
+    ".",        # project root
+    "app",
+]
+testpaths = [
+    "tests"
+]
 
 [build-system]
 requires = ["setuptools >= 61", "setuptools-scm[toml] ~= 6.0", "wheel"]
@@ -35,7 +44,7 @@ readme = { file = ["README.md"], content-type = "text/markdown" }
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["finance-tracker-app*"]
+include = ["app*"]
 namespaces = false
 
 [tool.setuptools.package-data]
@@ -133,6 +142,6 @@ reportPrivateImportUsage = "none"
 # Set the code package to analyze (adjust accordingly)
 package_name = "finance-tracker-app"
 # Specify a filter to only collect types for your code
-include = ["finance-tracker-app.*"]
+include = ["app.*"]
 # Ignore third-party dependencies
 exclude = ["venv.*", "site-packages.*"]
