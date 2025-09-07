@@ -39,6 +39,12 @@ testpaths = [
 requires = ["setuptools >= 61", "setuptools-scm[toml] ~= 6.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
+# keep this for dynamic versioning
+[tool.setuptools_scm]
+write_to = "finance_tracker_app/_version.py"
+local_scheme = "no-local-version"
+
+
 [tool.setuptools.dynamic]
 readme = { file = ["README.md"], content-type = "text/markdown" }
 
