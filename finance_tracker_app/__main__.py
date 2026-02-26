@@ -68,6 +68,7 @@ class FinanceTrackerApp(QMainWindow):
             # Scrape exchange rate
             exch = ExchangeRate(month, year)
             rate = exch.find_exch_rate()
+            self.statusBar().showMessage(f"Exchange Rate: 1CHF = {rate}EUR")
 
             # Analyze transactions
             tr = Transactions(df, exchange_rate=rate)
