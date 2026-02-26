@@ -13,7 +13,6 @@ class Transactions:
 
         self.reimbursements = 0
         self.EXP_CATEGORIES: dict = {
-            "Rent": [1050],
             "Hotels": [],
             "Supermarket": [],
             "Services": [],
@@ -32,7 +31,7 @@ class Transactions:
         self.UNCLASSIFIED_EXPENSES: list = []
 
         # Check total expenses approximately
-        self.total_expenses = self.calculate_total_expenses(df, exchange_rate) + self.EXP_CATEGORIES["Rent"][0]
+        self.total_expenses = self.calculate_total_expenses(df, exchange_rate)
         print(self.total_expenses)
 
     @staticmethod
@@ -64,6 +63,14 @@ class Transactions:
             ]:
                 self.EXP_CATEGORIES["Food at work"].append(row["Debit"])
                 continue
+            if (
+                "DUWEZ" in store
+                or "MO MORE" in store
+                or "HYPER U" in store
+                or "Metzgerei Klingler" in store
+            ):
+                self.EXP_CATEGORIES["Supermarket"].append(row["Debit"])
+                continue
 
             if (
                 "amazon" in store.lower()
@@ -71,6 +78,7 @@ class Transactions:
                 or "AMZN" in store
             ):
                 self.EXP_CATEGORIES["Shopping"].append(row["Debit"])
+                print(row)
                 continue
 
             if "CHF SURCHARGE ABROAD" in store:
@@ -122,6 +130,8 @@ class Transactions:
                 "Combination Catalog & Retail",
             ]:
                 self.EXP_CATEGORIES["Shopping"].append(row["Debit"])
+                print(row)
+
 
             elif sector in [
                 "Pharmacies",
@@ -133,6 +143,7 @@ class Transactions:
                 "Barber or beauty shops",
                 "Postal Services",
                 "Commercial Sports, Professional Sports Clubs, Athletic Fields, and Sports Promoters",
+                "Digital goods"
             ]:
                 self.EXP_CATEGORIES["Services"].append(row["Debit"])
 
