@@ -40,57 +40,75 @@ class FinanceTrackerApp(QMainWindow):
         layout.addWidget(self.result_table, 1, 1)
         layout.addWidget(self.printout_widget, 1, 0)
 
-        self.statusBar().showMessage('Select a CSV file and press "Analyze".')
+        self.statusBar().showMessage('Select CSV files and press "Analyze".')
 
-        # Connect button
+        # Connect buttons
         self.drop_area.analyze_btn.clicked.connect(self.run_analysis)
+        self.drop_area.new_analysis_btn.clicked.connect(self.reset_app)
 
     def run_analysis(self) -> None:
-        path = (
-            self.drop_area.drop_frame.file_path
-            if self.drop_area.drop_frame.file_path is not None
-            else self.drop_area.open_file_path
-        )
-        if not path:
-            self.statusBar().showMessage("Please select a CSV file first.")
+        paths = self.drop_area.drop_frame.file_paths
+        if not paths:
+            self.statusBar().showMessage("Please select at least one CSV file first.")
             return
         try:
-            # Load the data
-            df = pd.read_csv(path, sep=";", skiprows=1)
-            df = df.dropna(subset=["Card number"])
+            merged_categories: dict = {}
+            all_unclassified: list = []
+            total_expenses = 0.0
+            titles = []
+            rates_msg = []
 
-            # Expose month and year
-            last_date = df["Purchase date"][0]
-            year = last_date.split(".")[-1]
-            int_month = int(last_date.split(".")[1])
-            month = calendar.month_abbr[int_month]
+            for path in paths:
+                df = pd.read_csv(path, sep=";", skiprows=1)
+                df = df.dropna(subset=["Card number"])
 
-            # Scrape exchange rate
-            exch = ExchangeRate(month, year)
-            rate = exch.find_exch_rate()
-            self.statusBar().showMessage(f"Exchange Rate: 1CHF = {rate}EUR")
+                last_date = df["Purchase date"][0]
+                year = last_date.split(".")[-1]
+                int_month = int(last_date.split(".")[1])
+                month = calendar.month_abbr[int_month]
 
-            # Analyze transactions
-            tr = Transactions(df, exchange_rate=rate)
-            tr.analyze()
+                exch = ExchangeRate(month, year)
+                rate = exch.find_exch_rate()
+                rates_msg.append(f"{month} {year}: 1CHF={rate}EUR")
 
-            # Plot results
-            self.plot_widget.plot(
-                tr.EXP_CATEGORIES, title=f"{calendar.month_name[int_month]} {year}"
-            )
+                tr = Transactions(df, exchange_rate=rate)
+                tr.analyze()
 
-            # Result table
+                for key, val in tr.EXP_CATEGORIES.items():
+                    merged_categories[key] = round(
+                        merged_categories.get(key, 0.0) + val, 2
+                    )
+                all_unclassified.extend(tr.UNCLASSIFIED_EXPENSES)
+                total_expenses += tr.total_expenses
+                titles.append(f"{calendar.month_name[int_month]} {year}")
+
+            title = titles[0] if len(titles) == 1 else f"{titles[0]} – {titles[-1]}"
+
+            self.statusBar().showMessage(" | ".join(rates_msg))
+
+            self.plot_widget.plot(merged_categories, title=title)
+
             self.result_table.label.setText(
-                f"Total Monthly Expenses: {round(tr.total_expenses, 2)} EUR"
+                f"Total Expenses: {round(total_expenses, 2)} EUR"
             )
-            self.result_table.populate(tr.EXP_CATEGORIES)
+            self.result_table.populate(merged_categories)
 
-            # Unclassified transactions
-            self.printout_widget.dump_text(tr.UNCLASSIFIED_EXPENSES)
+            self.printout_widget.dump_text(all_unclassified)
 
-            # self.statusBar().showMessage("Analysis completed successfully.")
         except Exception as e:
             self.statusBar().showMessage(f"Error: {e}")
+
+    def reset_app(self) -> None:
+        self.drop_area.drop_frame.reset()
+        self.plot_widget.figure.clear()
+        self.plot_widget.canvas.draw()
+        self.result_table.label.setText("Total Expenses:")
+        self.result_table.table.clear()
+        self.result_table.table.setColumnCount(2)
+        self.result_table.table.setHorizontalHeaderLabels(["Category", "Amount"])
+        self.result_table.table.setRowCount(0)
+        self.printout_widget.text_area.clear()
+        self.statusBar().showMessage('Select CSV files and press "Analyze".')
 
 
 if __name__ == "__main__":
