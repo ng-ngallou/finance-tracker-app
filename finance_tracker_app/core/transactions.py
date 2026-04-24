@@ -19,6 +19,7 @@ class Transactions:
             "Food at work": [],
             "Food out": [],
             "Health / Pharmacy": [],
+            "Gym": [],
             "Car": [],
             "Transportation": [],
             "Shopping": [],
@@ -54,6 +55,10 @@ class Transactions:
             self.convert_chf_to_eur(row)
 
             store = row["Booking text"].split("  ")[0]
+            if "LA SALLE" in store:
+                self.EXP_CATEGORIES["Gym"].append(row["Debit"])
+                continue
+
             if store in [
                 "NOVAE RESTAURATION",
                 "NYA*Novae Restauration",
@@ -81,7 +86,11 @@ class Transactions:
                 print(row)
                 continue
 
-            if "CHF SURCHARGE ABROAD" in store:
+            if ("CHF SURCHARGE ABROAD" in store
+                    or "TELEKOM" in store
+                    or "GOOGLE*YOUTUBE" in store
+                or "CLAUDE.AI" in store
+            ):
                 self.EXP_CATEGORIES["Services"].append(row["Debit"])
                 continue
 

@@ -88,7 +88,7 @@ class FinanceTrackerApp(QMainWindow):
             # Unclassified transactions
             self.printout_widget.dump_text(tr.UNCLASSIFIED_EXPENSES)
 
-            self.statusBar().showMessage("Analysis completed successfully.")
+            # self.statusBar().showMessage("Analysis completed successfully.")
         except Exception as e:
             self.statusBar().showMessage(f"Error: {e}")
 
